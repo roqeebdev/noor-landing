@@ -2,7 +2,6 @@
 import { useEffect, useRef, useState, useCallback } from 'react'
 import Link from 'next/link'
 
-/* ── Islamic 8-point star polygon ── */
 const STAR = '100,20 113.4,67.7 156.6,43.4 132.3,86.6 180,100 132.3,113.4 156.6,156.6 113.4,132.3 100,180 86.6,132.3 43.4,156.6 67.7,113.4 20,100 67.7,86.6 43.4,43.4 86.6,67.7'
 
 const FEATURES = [
@@ -40,7 +39,6 @@ const MARQUEE = [
   '"Indeed, Allah is with the patient" · 2:153',
 ]
 
-/* ── Custom counter hook ── */
 function useCounter(target, duration = 2200) {
   const [val, setVal] = useState(0)
   const elRef = useRef(null)
@@ -72,17 +70,14 @@ export default function Home() {
   const [mouse, setMouse] = useState({ x: 0, y: 0 })
   const srRefs = useRef([])
 
-  // Animated stat counters
   const [surahs, refS] = useCounter(114)
-  const [ayahs, refA] = useCounter(6236)
-  const [trans, refT] = useCounter(50)
+  const [ayahs,  refA] = useCounter(6236)
+  const [trans,  refT] = useCounter(50)
   const [reciters, refR] = useCounter(100)
 
   useEffect(() => {
-    // Nav scroll
     const onScroll = () => setScrolled(window.scrollY > 30)
     window.addEventListener('scroll', onScroll, { passive: true })
-    // Scroll reveal
     const obs = new IntersectionObserver(
       entries => entries.forEach(e => e.isIntersecting && e.target.classList.add('in')),
       { threshold: 0.1 }
@@ -91,7 +86,6 @@ export default function Home() {
     return () => { window.removeEventListener('scroll', onScroll); obs.disconnect() }
   }, [])
 
-  // Hero parallax on mouse move
   const onMouseMove = useCallback((e) => {
     const { innerWidth: w, innerHeight: h } = window
     setMouse({ x: (e.clientX / w - 0.5) * 30, y: (e.clientY / h - 0.5) * 20 })
@@ -113,7 +107,7 @@ export default function Home() {
           <LogoMark size={34} />
           <span style={{ fontFamily:'var(--display)', fontSize:17, fontWeight:700, letterSpacing:6, color:'var(--gold)' }}>NOOR</span>
         </Link>
-        <div style={{ display:'flex', gap:36, alignItems:'center' }}>
+        <div className="nav-links">
           {[['Features','#features'],['About','#about'],['GitHub','https://github.com']].map(([l,h]) => (
             <a key={l} href={h} style={{ fontFamily:'var(--display)', fontSize:9.5, letterSpacing:3, color:'var(--cream-55)', textDecoration:'none', textTransform:'uppercase', transition:'color .2s' }}
               onMouseEnter={e=>e.target.style.color='var(--gold)'}
@@ -133,26 +127,23 @@ export default function Home() {
         {['p1','p2','p3','p4','p5','p6','p7','p8'].map(c => <div key={c} className={`particle ${c}`}/>)}
 
         {/* Arabic watermark */}
-        <div className="arabic-wm" style={{ position:'absolute', right:'-40px', top:'50%', transform:'translateY(-50%)', fontFamily:"'Scheherazade New','Amiri',serif", fontSize:'clamp(200px,32vw,420px)', color:'var(--gold)', animation:'glowPulse 7s ease-in-out infinite', lineHeight:0.9, userSelect:'none', pointerEvents:'none', zIndex:0 }}>
+        <div className="arabic-wm" style={{ position:'absolute', right:'-40px', top:'50%', transform:'translateY(-50%)', fontFamily:"'Scheherazade New','Amiri',serif", fontSize:'clamp(140px,28vw,420px)', color:'var(--gold)', animation:'glowPulse 7s ease-in-out infinite', lineHeight:0.9, userSelect:'none', pointerEvents:'none', zIndex:0 }}>
           نور
         </div>
 
         {/* Animated star */}
-        <div style={{
-          position:'absolute', right:'5%', top:'50%',
-          width:'min(460px,44vw)', aspectRatio:'1',
+        <div className="hero-star" style={{
           transform:`translateY(-50%) translate(${mouse.x * 0.4}px,${mouse.y * 0.4}px)`,
           transition:'transform 0.1s linear',
-          zIndex:1, animation:'starPulse 6s ease-in-out infinite',
         }}>
           <StarSVG />
         </div>
 
         {/* Hero copy */}
-        <div style={{ position:'relative', zIndex:2, maxWidth:700, padding:'80px 56px 80px 80px' }}>
+        <div className="hero-copy">
           <p className="eyebrow enter enter-0" style={{ marginBottom:28 }}>Quran Foundation Hackathon 2025</p>
 
-          <h1 className="enter enter-1" style={{ fontFamily:'var(--display)', fontWeight:900, fontSize:'clamp(52px,7.5vw,100px)', lineHeight:1.0, letterSpacing:'-1.5px', color:'var(--cream)', marginBottom:32 }}>
+          <h1 className="enter enter-1" style={{ fontFamily:'var(--display)', fontWeight:900, fontSize:'clamp(40px,7.5vw,100px)', lineHeight:1.0, letterSpacing:'-1.5px', color:'var(--cream)', marginBottom:32 }}>
             The Quran,<br/>
             <em style={{ color:'var(--gold-2)', fontStyle:'italic' }}>always</em><br/>
             with you.
@@ -169,7 +160,7 @@ export default function Home() {
             <a href="#features" className="btn-ghost">See Features</a>
           </div>
 
-          {/* Live Ayah card */}
+          {/* Ayah card */}
           <div className="card enter enter-4" style={{ padding:'28px 32px', maxWidth:420 }}>
             <p style={{ fontFamily:'var(--display)', fontSize:9, letterSpacing:4, color:'var(--gold)', textTransform:'uppercase', marginBottom:16 }}>Ayah of the Day</p>
             <p style={{ fontFamily:"'Scheherazade New','Amiri',serif", fontSize:28, color:'var(--gold-3)', lineHeight:1.7, textAlign:'right', direction:'rtl', marginBottom:14 }}>
@@ -197,16 +188,16 @@ export default function Home() {
       </div>
 
       {/* ── STATS ── */}
-      <section style={{ padding:'0 80px', borderBottom:'1px solid var(--border)' }}>
-        <div style={{ maxWidth:1100, margin:'0 auto', display:'grid', gridTemplateColumns:'repeat(4,1fr)' }}>
+      <section className="stats-section">
+        <div className="stats-grid">
           {[
-            { ref:refS, val:surahs,    suffix:'',  label:'Surahs' },
-            { ref:refA, val:ayahs,     suffix:'',  label:'Ayahs' },
-            { ref:refT, val:trans,     suffix:'+', label:'Translations' },
-            { ref:refR, val:reciters,  suffix:'+', label:'Reciters' },
+            { ref:refS, val:surahs,   suffix:'',  label:'Surahs' },
+            { ref:refA, val:ayahs,    suffix:'',  label:'Ayahs' },
+            { ref:refT, val:trans,    suffix:'+', label:'Translations' },
+            { ref:refR, val:reciters, suffix:'+', label:'Reciters' },
           ].map((s,i) => (
             <div key={i} ref={s.ref} style={{ padding:'72px 24px', textAlign:'center', borderRight: i<3 ? '1px solid var(--border)' : 'none' }}>
-              <p className="shimmer" style={{ fontFamily:'var(--display)', fontSize:64, fontWeight:900, lineHeight:1, marginBottom:12 }}>
+              <p className="shimmer" style={{ fontFamily:'var(--display)', fontSize:'clamp(36px,5vw,64px)', fontWeight:900, lineHeight:1, marginBottom:12 }}>
                 {s.val.toLocaleString()}{s.suffix}
               </p>
               <p style={{ fontFamily:'var(--display)', fontSize:10, letterSpacing:4, color:'var(--cream-30)', textTransform:'uppercase' }}>{s.label}</p>
@@ -216,8 +207,8 @@ export default function Home() {
       </section>
 
       {/* ── FEATURES ── */}
-      <section id="features" style={{ padding:'120px 80px' }}>
-        <div style={{ maxWidth:1100, margin:'0 auto' }}>
+      <section id="features" className="section-pad">
+        <div className="inner">
           <p className="eyebrow sr" ref={sr()} style={{ marginBottom:20 }}>What Noor Does</p>
           <h2 className="h2 sr sr-d1" ref={sr(1)} style={{ maxWidth:540, marginBottom:18 }}>
             Built on every <em>API</em><br/>they offer
@@ -226,7 +217,7 @@ export default function Home() {
             From Content to OAuth2 — Noor integrates the full Quran Foundation API surface to create the most complete Quran experience on mobile.
           </p>
 
-          <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:2 }}>
+          <div className="features-grid">
             {FEATURES.map((f,i) => (
               <div key={i} className={`card sr sr-d${(i%3)+1}`} ref={sr((i%3)+1)} style={{ padding:'44px 36px' }}
                 onMouseMove={e => {
@@ -236,26 +227,18 @@ export default function Home() {
                   e.currentTarget.style.transform = `translateY(-8px) rotateX(${-y}deg) rotateY(${x}deg) scale(1.005)`
                 }}
                 onMouseLeave={e => { e.currentTarget.style.transform = '' }}>
-
-                {/* Corner star accent */}
                 <div style={{ position:'absolute', top:-1, right:-1, opacity:0.12 }}>
                   <svg viewBox="0 0 50 50" width="50" height="50">
                     <polygon points={STAR} transform="scale(0.22) translate(14,14)" fill="var(--gold)"/>
                   </svg>
                 </div>
-
-                {/* Tag */}
-                <p style={{ fontFamily:'var(--display)', fontSize:8, letterSpacing:3, color:'rgba(201,151,43,0.55)', textTransform:'uppercase', marginBottom:20 }}>
-                  {f.tag}
-                </p>
-
+                <p style={{ fontFamily:'var(--display)', fontSize:8, letterSpacing:3, color:'rgba(201,151,43,0.55)', textTransform:'uppercase', marginBottom:20 }}>{f.tag}</p>
                 <div style={{ display:'flex', alignItems:'center', gap:14, marginBottom:20 }}>
                   <div style={{ width:44, height:44, background:'rgba(201,151,43,0.08)', border:'1px solid rgba(201,151,43,0.2)', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}>
                     <span style={{ fontFamily:'var(--display)', fontSize:16, color:'var(--gold)', fontWeight:700 }}>{f.icon}</span>
                   </div>
                   <h3 style={{ fontFamily:'var(--display)', fontSize:18, fontWeight:700, color:'var(--cream)', lineHeight:1.2 }}>{f.title}</h3>
                 </div>
-
                 <p style={{ fontFamily:'var(--body)', fontSize:14, lineHeight:1.78, color:'var(--cream-55)', fontWeight:300 }}>{f.desc}</p>
               </div>
             ))}
@@ -264,8 +247,7 @@ export default function Home() {
       </section>
 
       {/* ── AYAH SPOTLIGHT ── */}
-      <section style={{ position:'relative', padding:'120px 80px', background:'var(--bg-1)', overflow:'hidden', borderTop:'1px solid var(--border)', borderBottom:'1px solid var(--border)' }}>
-        {/* Background star grid */}
+      <section className="section-pad" style={{ position:'relative', background:'var(--bg-1)', overflow:'hidden', borderTop:'1px solid var(--border)', borderBottom:'1px solid var(--border)' }}>
         <div style={{ position:'absolute', inset:0, display:'flex', alignItems:'center', justifyContent:'center', opacity:0.03, pointerEvents:'none' }}>
           <svg viewBox="0 0 200 200" width="900" height="900">
             {[1,0.7,0.45].map((s,i) => (
@@ -276,11 +258,11 @@ export default function Home() {
         </div>
         <div style={{ maxWidth:760, margin:'0 auto', textAlign:'center', position:'relative', zIndex:1 }}>
           <p className="eyebrow sr" ref={sr()} style={{ justifyContent:'center', marginBottom:48 }}>Featured Verse</p>
-          <p className="sr sr-d1" ref={sr(1)} style={{ fontFamily:"'Scheherazade New','Amiri',serif", fontSize:'clamp(30px,5vw,54px)', color:'var(--gold-3)', lineHeight:1.9, direction:'rtl', marginBottom:44 }}>
+          <p className="sr sr-d1" ref={sr(1)} style={{ fontFamily:"'Scheherazade New','Amiri',serif", fontSize:'clamp(26px,5vw,54px)', color:'var(--gold-3)', lineHeight:1.9, direction:'rtl', marginBottom:44 }}>
             أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ
           </p>
           <div className="gold-hr sr sr-d2" ref={sr(2)} style={{ width:72, margin:'0 auto 36px' }}/>
-          <p className="sr sr-d2" ref={sr(2)} style={{ fontFamily:'var(--display)', fontStyle:'italic', fontSize:'clamp(17px,2.5vw,26px)', color:'var(--cream)', fontWeight:400, lineHeight:1.5, marginBottom:24 }}>
+          <p className="sr sr-d2" ref={sr(2)} style={{ fontFamily:'var(--display)', fontStyle:'italic', fontSize:'clamp(15px,2.5vw,26px)', color:'var(--cream)', fontWeight:400, lineHeight:1.5, marginBottom:24 }}>
             "Verily, in the remembrance of Allah<br/>do hearts find rest."
           </p>
           <p className="sr sr-d3" ref={sr(3)} style={{ fontFamily:'var(--display)', fontSize:10, letterSpacing:4, color:'rgba(201,151,43,0.45)', textTransform:'uppercase' }}>Surah Ar-Ra'd · 13:28</p>
@@ -288,16 +270,16 @@ export default function Home() {
       </section>
 
       {/* ── HOW IT WORKS ── */}
-      <section id="about" style={{ padding:'120px 80px' }}>
-        <div style={{ maxWidth:1100, margin:'0 auto' }}>
+      <section id="about" className="section-pad">
+        <div className="inner">
           <p className="eyebrow sr" ref={sr()} style={{ marginBottom:20 }}>How It Works</p>
           <h2 className="h2 sr sr-d1" ref={sr(1)} style={{ marginBottom:80 }}>
             Simple. Secure. <em>Spiritual.</em>
           </h2>
-          <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:0 }}>
+          <div className="steps-grid">
             {STEPS.map((s,i) => (
-              <div key={i} className={`sr sr-d${i+1}`} ref={sr(i+1)} style={{ padding:'0 40px 0 0', borderRight: i<2 ? '1px solid var(--border)' : 'none', paddingRight: i<2 ? 60 : 0, paddingLeft: i>0 ? 60 : 0 }}>
-                <p style={{ fontFamily:'var(--display)', fontSize:76, fontWeight:900, color:'transparent', WebkitTextStroke:'1px rgba(201,151,43,0.2)', lineHeight:1, marginBottom:24 }}>{s.n}</p>
+              <div key={i} className={`sr sr-d${i+1} step-item ${i < 2 ? 'step-item-border' : ''} ${i > 0 ? 'step-item-indent' : ''}`} ref={sr(i+1)}>
+                <p style={{ fontFamily:'var(--display)', fontSize:'clamp(48px,6vw,76px)', fontWeight:900, color:'transparent', WebkitTextStroke:'1px rgba(201,151,43,0.2)', lineHeight:1, marginBottom:24 }}>{s.n}</p>
                 <h3 style={{ fontFamily:'var(--display)', fontSize:24, fontWeight:700, color:'var(--cream)', marginBottom:18 }}>{s.title}</h3>
                 <div className="gold-hr" style={{ width:36, marginBottom:20 }}/>
                 <p style={{ fontFamily:'var(--body)', fontSize:15, lineHeight:1.78, color:'var(--cream-55)', fontWeight:300 }}>{s.desc}</p>
@@ -308,10 +290,10 @@ export default function Home() {
       </section>
 
       {/* ── OAUTH2 SCOPES ── */}
-      <section style={{ padding:'100px 80px', background:'var(--bg-1)', borderTop:'1px solid var(--border)', borderBottom:'1px solid var(--border)' }}>
-        <div style={{ maxWidth:1100, margin:'0 auto' }}>
-          <div style={{ display:'flex', alignItems:'flex-start', justifyContent:'space-between', gap:64, flexWrap:'wrap' }}>
-            <div style={{ flex:'0 0 320px' }}>
+      <section className="section-pad-sm" style={{ background:'var(--bg-1)', borderTop:'1px solid var(--border)', borderBottom:'1px solid var(--border)' }}>
+        <div className="inner">
+          <div className="oauth-flex">
+            <div className="oauth-text">
               <p className="eyebrow sr" ref={sr()} style={{ marginBottom:20 }}>OAuth2 + OIDC</p>
               <h2 className="h2 sr sr-d1" ref={sr(1)} style={{ fontSize:'clamp(28px,3.5vw,44px)', marginBottom:20 }}>
                 User data,<br/><em>secured right</em>
@@ -320,8 +302,8 @@ export default function Home() {
                 Noor uses Authorization Code flow with PKCE and OpenID Connect via the Quran Foundation identity provider. Token exchange happens on a secure backend — never exposed in the app.
               </p>
             </div>
-            <div className="sr sr-d2" ref={sr(2)} style={{ flex:1, minWidth:300 }}>
-              <div style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:2 }}>
+            <div className="oauth-cards sr sr-d2" ref={sr(2)}>
+              <div className="scopes-grid">
                 {SCOPES.map((s,i) => (
                   <div key={i} className="card" style={{ padding:'20px 16px', textAlign:'center' }}>
                     <p style={{ fontFamily:'var(--display)', fontSize:8.5, letterSpacing:1.5, color:'var(--gold)', marginBottom:8, textTransform:'lowercase' }}>{s.scope}</p>
@@ -338,8 +320,8 @@ export default function Home() {
       </section>
 
       {/* ── TECH STACK ── */}
-      <section style={{ padding:'72px 80px', borderBottom:'1px solid var(--border)' }}>
-        <div style={{ maxWidth:1100, margin:'0 auto', display:'flex', alignItems:'center', justifyContent:'space-between', flexWrap:'wrap', gap:32 }}>
+      <section className="section-pad-tech" style={{ borderBottom:'1px solid var(--border)' }}>
+        <div className="tech-flex">
           <div className="sr" ref={sr()}>
             <p className="eyebrow" style={{ marginBottom:12 }}>Built With</p>
             <p style={{ fontFamily:'var(--display)', fontSize:26, fontWeight:700, color:'var(--cream)' }}>Quran Foundation APIs</p>
@@ -353,7 +335,7 @@ export default function Home() {
       </section>
 
       {/* ── CTA ── */}
-      <section style={{ position:'relative', padding:'160px 80px', textAlign:'center', overflow:'hidden' }}>
+      <section className="section-pad-cta" style={{ position:'relative', textAlign:'center', overflow:'hidden' }}>
         <div style={{ position:'absolute', top:'50%', left:'50%', width:900, height:900, background:'radial-gradient(circle, rgba(201,151,43,0.055) 0%, transparent 60%)', transform:'translate(-50%,-50%)', pointerEvents:'none' }}/>
         <div style={{ position:'absolute', top:'50%', left:'50%', width:300, height:300, background:'radial-gradient(circle, rgba(26,107,74,0.12) 0%, transparent 60%)', transform:'translate(-50%,-50%)', pointerEvents:'none' }}/>
         <div style={{ position:'relative', zIndex:1, maxWidth:640, margin:'0 auto' }}>
@@ -372,12 +354,12 @@ export default function Home() {
       </section>
 
       {/* ── FOOTER ── */}
-      <footer style={{ borderTop:'1px solid var(--border)', padding:'44px 80px', display:'flex', alignItems:'center', justifyContent:'space-between', flexWrap:'wrap', gap:24 }}>
+      <footer className="footer-pad">
         <div style={{ display:'flex', alignItems:'center', gap:12 }}>
           <LogoMark size={28} />
           <span style={{ fontFamily:'var(--display)', fontSize:13, fontWeight:700, letterSpacing:5, color:'var(--gold)' }}>NOOR</span>
         </div>
-        <div style={{ display:'flex', gap:28, flexWrap:'wrap' }}>
+        <div className="footer-links" style={{ display:'flex', gap:28, flexWrap:'wrap' }}>
           {[['Privacy Policy','/privacy-policy'],['Terms of Service','/terms'],['Quran Foundation','https://quran.foundation']].map(([l,h]) => (
             <Link key={l} href={h} style={{ fontFamily:'var(--display)', fontSize:9.5, letterSpacing:3, color:'var(--cream-30)', textDecoration:'none', textTransform:'uppercase', transition:'color .2s' }}
               onMouseEnter={e=>e.target.style.color='var(--gold)'}
@@ -390,7 +372,6 @@ export default function Home() {
   )
 }
 
-/* ── Islamic Geometric Star ── */
 function StarSVG() {
   return (
     <svg viewBox="0 0 200 200" width="100%" height="100%" style={{ overflow:'visible' }}>
@@ -401,22 +382,17 @@ function StarSVG() {
         </radialGradient>
       </defs>
       <circle cx="100" cy="100" r="110" fill="url(#sg)"/>
-      {/* Orbit rings */}
       <circle cx="100" cy="100" r="94" fill="none" stroke="rgba(201,151,43,0.05)" strokeWidth="1" strokeDasharray="3 9"/>
       <circle cx="100" cy="100" r="76" fill="none" stroke="rgba(201,151,43,0.07)" strokeWidth="1" strokeDasharray="6 6"/>
-      {/* Outer star — slow CW */}
       <g style={{ animation:'rotateCW 80s linear infinite', transformOrigin:'100px 100px' }}>
         <polygon points={STAR} fill="none" stroke="rgba(201,151,43,0.18)" strokeWidth="0.8"/>
       </g>
-      {/* Mid star — CCW */}
       <g style={{ animation:'rotateCCW 55s linear infinite', transformOrigin:'100px 100px' }}>
         <polygon points={STAR} transform="scale(0.65) translate(35,35)" fill="none" stroke="rgba(201,151,43,0.28)" strokeWidth="1"/>
       </g>
-      {/* Inner star — CW faster */}
       <g style={{ animation:'rotateCW 30s linear infinite', transformOrigin:'100px 100px' }}>
         <polygon points={STAR} transform="scale(0.38) translate(62,62)" fill="rgba(201,151,43,0.06)" stroke="rgba(201,151,43,0.55)" strokeWidth="1.4"/>
       </g>
-      {/* Floating core */}
       <g style={{ animation:'floatY 7s ease-in-out infinite', transformOrigin:'100px 100px' }}>
         <circle cx="100" cy="100" r="20" fill="rgba(201,151,43,0.07)" stroke="rgba(201,151,43,0.35)" strokeWidth="1"/>
         <circle cx="100" cy="100" r="5"  fill="rgba(201,151,43,0.75)"/>
@@ -426,7 +402,6 @@ function StarSVG() {
   )
 }
 
-/* ── Logo mark ── */
 function LogoMark({ size = 40 }) {
   return (
     <svg width={size} height={size} viewBox="0 0 80 80" style={{ flexShrink:0 }}>
