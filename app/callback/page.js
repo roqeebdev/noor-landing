@@ -1,9 +1,9 @@
 'use client';
 
-import { useEffect } from 'react';
+import { Suspense, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 
-export default function CallbackPage() {
+function CallbackHandler() {
   const searchParams = useSearchParams();
 
   useEffect(() => {
@@ -12,13 +12,11 @@ export default function CallbackPage() {
     const error = searchParams.get('error');
 
     if (error) {
-      // Deep link error back to app
       window.location.href = `com.noor.app://auth/callback?error=${error}`;
       return;
     }
 
     if (code) {
-      // Deep link the code + state back to the Flutter app
       const params = new URLSearchParams({ code, ...(state && { state }) });
       window.location.href = `com.noor.app://auth/callback?${params.toString()}`;
     }
@@ -37,5 +35,13 @@ export default function CallbackPage() {
     }}>
       <p>Completing sign in, please wait...</p>
     </div>
+  );
+}
+
+export default function CallbackPage() {
+  return (
+    <Suspense fallback={null}>
+      <CallbackHandler />
+    </Suspense>
   );
 }
